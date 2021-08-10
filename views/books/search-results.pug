@@ -1,9 +1,14 @@
 extends ../layout
 
 block content
-  h1 Search Results
+  h1 Search Results for "#{query}"
   p 
     a.button(href="/books") Return to Book List
-  include includes/book-list
+  if(books.length > 0)
+    include includes/book-list
+  else
+    br
+    h2 Sorry! No results found.
+    p You can return to the book list or try another search query.
   include includes/search-form
   

@@ -25,14 +25,13 @@ router.get('/', (req, res, next) => {
 
 /* Show paginated list of books */
 router.get('/books', asyncHandler(async (req, res) => {
-	const page = req.query.p || 0;
+	let page = req.query.p || 0;
 	const booksPerPage = 10;
   	const books = await Book.findAndCountAll({ 
 		limit: booksPerPage,
 		offset: page * booksPerPage
 	});
 	const numOfPages = Math.ceil( books.count / booksPerPage );
-
   	res.render('books/index', { books: books.rows, title: 'Library Books', numOfPages });
 }));
 
@@ -53,7 +52,7 @@ router.get('/search', asyncHandler(async (req, res) => {
 			]
 		}
 	});
-	res.render('books/search-results', { books, title: 'Library Search'});
+	res.render('books/search-results', { books, query, title: 'Library Search'});
 }));
 
 /**

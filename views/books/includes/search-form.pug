@@ -1,5 +1,8 @@
 .search
     form(action=`/search` method="get") 
       label Search
-      input(type="text" name="query" id="query" placeholder="Search by title, author, genre or year.")
+      if(query)
+        input(type="text" name="query" id="query" value=`${query}`)
+      else
+        input(type="text" name="query" id="query" placeholder="Search by title, author, genre or year.")
       input(type="submit" value="Submit")
