@@ -1,4 +1,4 @@
-# FSJS Project 8: SQLLibraryManager
+# FSJS Project 8: SQL Library Manager
  An app to manage the collection of books in a library
 
 ## Project Description (from Treehouse)
