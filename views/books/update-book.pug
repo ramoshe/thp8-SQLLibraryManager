@@ -3,10 +3,10 @@ extends ../layout
 block content 
   h1 Update Book 
 
-  include errors
+  include includes/errors
 
   form(action=`/books/${book.id}`, method="post")
-    include form
+    include includes/book-form
     p 
       input(type="submit" value="Update Book")
 

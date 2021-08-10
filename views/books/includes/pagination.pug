@@ -1,0 +1,5 @@
+- var page = 0
+.pagination
+  p Go to page: 
+    while page < numOfPages
+      a.button(href=`/books?p=${page}`)= (page++) + 1

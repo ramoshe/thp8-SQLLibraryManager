@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var Book = require('../models').Book;
+const express = require('express');
+const router = express.Router();
+const { Op } = require('sequelize');
+const Book = require('../models').Book;
 
 /* Handler function to wrap each route with an async function. */
 function asyncHandler(cb){
@@ -14,17 +15,50 @@ function asyncHandler(cb){
   	}
 }
 
+/**
+ * HOME 
+ */
 /* Home page redirects to books */
 router.get('/', (req, res, next) => {
   	res.redirect('/books');
 });
 
-/* Show full list of books */
+/* Show paginated list of books */
 router.get('/books', asyncHandler(async (req, res) => {
-  	const books = await Book.findAll();
-  	res.render('books/index', { books, title: 'Library Books' });
+	const page = req.query.p || 0;
+	const booksPerPage = 10;
+  	const books = await Book.findAndCountAll({ 
+		limit: booksPerPage,
+		offset: page * booksPerPage
+	});
+	const numOfPages = Math.ceil( books.count / booksPerPage );
+
+  	res.render('books/index', { books: books.rows, title: 'Library Books', numOfPages });
 }));
 
+/**
+ * SEARCH
+ */
+/* Search for books that match query from url */
+router.get('/search', asyncHandler(async (req, res) => {
+	const { query } = req.query;
+	const queryMatch = { [Op.substring]: query };
+	const books = await Book.findAll({
+		where: { 
+			[Op.or]: [
+				{ title: queryMatch },
+				{ author: queryMatch },
+				{ genre: queryMatch },
+				{ year: queryMatch } 
+			]
+		}
+	});
+	res.render('books/search-results', { books, title: 'Library Search'});
+}));
+
+/**
+ * ADD NEW BOOKS
+ */
 /* Show the create new books form */
 router.get('/books/new', (req, res, next) => {
   	res.render('books/new-book', { title: 'New Book' });
@@ -46,13 +80,16 @@ router.post('/books/new', asyncHandler(async (req, res) => {
   	}
 }));
 
+/**
+ * UPDATE BOOKS
+ */
 /* Show book detail form */
 router.get('/books/:id', asyncHandler(async (req, res) => {
   	const book = await Book.findByPk(req.params.id);
 	res.render('books/update-book', { book, title: 'Update Book'});
 }));
 
-/* Updates book info in the database */
+/* Update book info in the database */
 router.post('/books/:id', asyncHandler(async (req, res) => {
   let book;
   try {
@@ -72,6 +109,9 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
   }
 }));
 
+/**
+ * DELETE BOOKS
+ */
 /* Deletes a book */
 router.post('/books/:id/delete', asyncHandler(async (req ,res) => {
 	const book = await Book.findByPk(req.params.id);

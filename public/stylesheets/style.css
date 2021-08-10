@@ -100,3 +100,22 @@ input[type=text] {
 .error {
   color: tomato;
 }
+
+.search {
+  width: fit-content;
+  margin-top: 2em;
+  padding: 0em 1em 0em 1em;
+  border: solid 2px lightgray;
+}
+
+  .search label {
+    min-width: 0px;
+  }
+
+  .search input {
+    margin: 1em;
+  }
+
+.pagination a {
+  margin: .5em;
+}
