@@ -2,7 +2,7 @@
 My eigth project for the Full Stack JavaScript Techdegree program at Treehouse. An app to manage the collection of books in a library.
  
 ## How To Use
- - You can view a live version of this project here: https://g.ramoshe.com/thp8-SQLLibraryManager/
+ - You can view a live version of this project here: https://thp8-sqllibrarymanager.herokuapp.com/books
  - If you want a local copy of the project:
     1. Download the files: https://github.com/ramoshe/thp8-SQLLibraryManager/archive/refs/heads/main.zip
     3. In the console, navigate to the main project folder and run `npm install` and then `npm start`
